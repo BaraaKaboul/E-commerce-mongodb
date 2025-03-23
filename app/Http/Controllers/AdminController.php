@@ -17,4 +17,8 @@ class AdminController extends Controller
     public function index(){
         return $this->admin->index();
     }
+
+    public function getBrand(){
+        return $this->admin->createBrand();
+    }
 }
