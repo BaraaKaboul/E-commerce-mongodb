@@ -33,7 +33,7 @@
                                 </div>
                             </form>
                         </div>
-                        <a class="tf-button style-1 w208" href="add-brand.html"><i
+                        <a class="tf-button style-1 w208" href="{{route('admin.brand.create.page')}}"><i
                                 class="icon-plus"></i>Add new</a>
                     </div>
                     <div class="wg-table table-all-user">
@@ -51,10 +51,10 @@
                                 <tbody>
                                 @foreach($brands as $data)
                                 <tr>
-                                    <td>{{$data->itteration}}</td>
+                                    <td>{{$loop->iteration}}</td>
                                     <td class="pname">
                                         <div class="image">
-                                            <img src="{{asset('uploads/brands')}}/{{$data->image}}" alt="" class="image">
+                                            <img src="{{asset('Attachments/'.$data->name)}}/{{$data->image}}" alt="" class="image">
                                         </div>
                                         <div class="name">
                                             <a href="#" class="body-title-2">{{$data->name}}</a>

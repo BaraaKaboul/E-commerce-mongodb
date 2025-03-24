@@ -19,6 +19,14 @@ class AdminController extends Controller
     }
 
     public function getBrand(){
-        return $this->admin->createBrand();
+        return $this->admin->getBrands();
+    }
+
+    public function createBrandPage(){
+        return $this->admin->createBrandPage();
+    }
+
+    public function createBrand(Request $request){
+        return $this->admin->createBrand($request);
     }
 }

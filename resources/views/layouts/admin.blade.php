@@ -84,7 +84,7 @@
                                 </a>
                                 <ul class="sub-menu">
                                     <li class="sub-menu-item">
-                                        <a href="add-brand.html" class="">
+                                        <a href="{{route('admin.brand.create.page')}}" class="">
                                             <div class="text">New Brand</div>
                                         </a>
                                     </li>
@@ -271,12 +271,11 @@
                                                 </li>
                                                 <li class="product-item gap14 mb-10">
                                                     <div class="image no-bg">
-                                                        <img src="images/products/21.png" alt="">
+                                                        <img src="{{asset('images/products/21.png')}}" alt="">
                                                     </div>
                                                     <div class="flex items-center justify-between gap20 flex-grow">
                                                         <div class="name">
-                                                            <a href="product-list.html" class="body-text">Kristin
-                                                                Watson</a>
+                                                            <a href="product-list.html" class="body-text">Kristin Watson</a>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -396,7 +395,7 @@
                                                     <img src="{{asset('images/avatar/user-1.png')}}" alt="">
                                                 </span>
                                                 <span class="flex flex-column">
-                                                    <span class="body-title mb-2">Kristin Watson</span>
+                                                    <span class="body-title mb-2">{{auth()->user()->name}}</span>
                                                     <span class="text-tiny">Admin</span>
                                                 </span>
                                             </span>
