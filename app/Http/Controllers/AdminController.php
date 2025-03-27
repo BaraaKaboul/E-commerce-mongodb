@@ -29,4 +29,16 @@ class AdminController extends Controller
     public function createBrand(Request $request){
         return $this->admin->createBrand($request);
     }
+
+    public function updateBrandPage($brand){
+        return $this->admin->updateBrandPage($brand);
+    }
+
+    public function updateBrand(Request $request, $brand){
+        return $this->admin->updateBrand($request, $brand);
+    }
+
+    public function deleteBrand($brand){
+        return $this->admin->deleteBrand($brand);
+    }
 }

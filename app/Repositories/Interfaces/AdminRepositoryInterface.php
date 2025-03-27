@@ -13,4 +13,10 @@ interface AdminRepositoryInterface
     public function createBrandPage();
 
     public function createBrand(Request $request);
+
+    public function updateBrandPage($brand);
+
+    public function updateBrand(Request $request, $brand);
+
+    public function deleteBrand($brand);
 }

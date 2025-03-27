@@ -49,7 +49,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($brands as $data)
+                                @forelse($brands as $data)
                                 <tr>
                                     <td>{{$loop->iteration}}</td>
                                     <td class="pname">
@@ -64,20 +64,24 @@
                                     <td><a href="#" target="_blank">0</a></td>
                                     <td>
                                         <div class="list-icon-function">
-                                            <a href="#">
+                                            <a href="{{route('admin.brand.update.page',$data->id)}}">
                                                 <div class="item edit">
                                                     <i class="icon-edit-3"></i>
                                                 </div>
                                             </a>
-                                            <form action="#" method="POST">
+                                            <form action="{{route('admin.brand.delete',$data->id)}}" method="POST">
+                                                @csrf
+                                                @method('delete')
                                                 <div class="item text-danger delete">
                                                     <i class="icon-trash-2"></i>
                                                 </div>
                                             </form>
                                         </div>
                                     </td>
+                                    @empty
+                                        <h2>no data</h2>
                                 </tr>
-                                @endforeach
+                                @endforelse
                                 </tbody>
                             </table>
                         </div>
@@ -90,3 +94,24 @@
             </div>
         </div>
 @endsection
+@push('scripts')
+    <script> // هاد الكود مشان اعمل ticket للحذف بالكلاس الي اسمو delete
+        $(function (){
+            $('.delete').on('click', function (e){
+                e.preventDefault();
+                var form = $(this).closest('form');
+                swal({
+                    title: 'Are you sure ?',
+                    text: 'Once you delete it, you will never recover the data.',
+                    type: 'warning',
+                    buttons: ['No','Yes'],
+                    confirmButtonColor: '#dc3545',
+                }).then(function (result){
+                    if(result){
+                        form.submit();
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

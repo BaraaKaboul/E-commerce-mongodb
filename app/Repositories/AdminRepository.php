@@ -39,7 +39,7 @@ class AdminRepository implements AdminRepositoryInterface
 
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
-                $file_name = $image->getClientOriginalName();
+                $file_name = time() . '_' . $image->getClientOriginalName();
                 $brand->image = $file_name;
 
                 // move pic
@@ -52,5 +52,61 @@ class AdminRepository implements AdminRepositoryInterface
         }catch (\Exception $e){
             return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
         }
+    }
+
+    public function updateBrandPage($brand)
+    {
+        try {
+            $brand_id = Brand::find($brand);
+            return view('admin.edit-brand',compact('brand_id'));
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+        }
+
+    }
+
+    public function updateBrand(Request $request, $brand){
+        try {
+            $old_image = $request->old_image;
+
+
+            if ($request->hasFile('image')) {
+
+                //هاي التعليمة بتحذف الصورة القديمة ومنستبدلها بالصورة الي رح يضيفا المستخدم ازا بدو يعدل الصورة
+                unlink($old_image);
+
+                $image = $request->file('image');
+                $fileName = time() . '.' . $image->getClientOriginalName();
+                $request->image->move(public_path('Attachments/'.$request->name), $fileName);
+
+
+                Brand::where('id', $brand)->findOrFail($brand)->update([
+                    'name' => $request->name,
+                    'slug' => Str::slug($request->slug),
+                    'image'=>$fileName,
+                ]);
+                return to_route('admin.brands');
+            }
+            else
+                Brand::findOrFail($brand)->update([
+                    'name' => $request->name,
+                    'slug' => Str::slug($request->slug),
+                ]);
+            return to_route('admin.brands');
+
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+        }
+    }
+
+    public function deleteBrand($brand)
+    {
+        try {
+            Brand::where('id', $brand)->delete();
+            return redirect()->back();
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+        }
+
     }
 }
