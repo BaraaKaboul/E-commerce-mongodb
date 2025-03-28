@@ -3,9 +3,11 @@
 namespace App\Repositories;
 
 use App\Models\Brand;
+use App\Models\Category;
 use App\Repositories\Interfaces\AdminRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use function MongoDB\create_field_path_type_map;
 
 class AdminRepository implements AdminRepositoryInterface
 {
@@ -107,6 +109,15 @@ class AdminRepository implements AdminRepositoryInterface
         }catch (\Exception $e){
             return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
         }
+    }
 
+    public function getCategories()
+    {
+        try {
+            $categories = Category::orderBy('id','desc')->paginate(10);
+            return view('admin.category',compact('categories'));
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+        }
     }
 }

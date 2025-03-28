@@ -19,4 +19,6 @@ interface AdminRepositoryInterface
     public function updateBrand(Request $request, $brand);
 
     public function deleteBrand($brand);
+
+    public function getCategories();
 }

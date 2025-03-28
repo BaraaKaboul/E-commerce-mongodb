@@ -17,4 +17,8 @@ Route::middleware(['auth','AuthAdmin'])->controller(AdminController::class)->gro
     Route::get('/dashboard/brand/update/{brand}','updateBrandPage')->name('admin.brand.update.page');
     Route::patch('/dashboard/brand/update/{brand}','updateBrand')->name('admin.brand.update');
     Route::delete('/dashboard/brand/delete/{brand}','deleteBrand')->name('admin.brand.delete');
+
+    Route::get('/dashboard/categories','getCategories')->name('admin.categories');
+
+
 });

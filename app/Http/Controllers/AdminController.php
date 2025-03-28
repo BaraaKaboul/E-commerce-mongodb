@@ -41,4 +41,8 @@ class AdminController extends Controller
     public function deleteBrand($brand){
         return $this->admin->deleteBrand($brand);
     }
+
+    public function getCategories(){
+        return $this->admin->getCategories();
+    }
 }
