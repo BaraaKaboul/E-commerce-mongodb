@@ -12,4 +12,8 @@ class Brand extends Model
         'slug',
         'image'
     ];
+
+    public function category(){
+        return $this->hasMany(Category::class);
+    }
 }

@@ -21,4 +21,14 @@ interface AdminRepositoryInterface
     public function deleteBrand($brand);
 
     public function getCategories();
+
+    public function createCategoryPage();
+
+    public function createCategory($request);
+
+    public function updateCategoryPage($category);
+
+    public function updateCategory($request, $category);
+
+    public function deleteCategory($category);
 }

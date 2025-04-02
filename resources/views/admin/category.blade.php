@@ -33,7 +33,7 @@
                             </div>
                         </form>
                     </div>
-                    <a class="tf-button style-1 w208" href=""><i
+                    <a class="tf-button style-1 w208" href="{{route('admin.categories.create')}}"><i
                             class="icon-plus"></i>Add new</a>
                 </div>
                 <div class="wg-table table-all-user">
@@ -44,7 +44,7 @@
                                 <th>#</th>
                                 <th>Name</th>
                                 <th>Slug</th>
-                                <th>Products</th>
+                                <th>Brand</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -54,22 +54,22 @@
                                     <td>{{$loop->iteration}}</td>
                                     <td class="pname">
                                         <div class="image">
-                                            <img src="{{asset('Attachments/'.$data->name)}}/{{$data->image}}" alt="" class="image">
+                                            <img src="{{asset('Attachments/'.$data->brand->name.'/'.$data->name)}}/{{$data->image}}" alt="" class="image">
                                         </div>
                                         <div class="name">
                                             <a href="#" class="body-title-2">{{$data->name}}</a>
                                         </div>
                                     </td>
                                     <td>{{$data->slug}}</td>
-                                    <td><a href="#" target="_blank">0</a></td>
+                                    <td><a href="#" target="_blank">{{$data->brand->name}}</a></td>
                                     <td>
                                         <div class="list-icon-function">
-                                            <a href="">
+                                            <a href="{{route('admin.categories.update.page',$data->id)}}">
                                                 <div class="item edit">
                                                     <i class="icon-edit-3"></i>
                                                 </div>
                                             </a>
-                                            <form action="" method="POST">
+                                            <form action="{{route('admin.category.delete',$data->id)}}" method="POST">
                                                 @csrf
                                                 @method('delete')
                                                 <div class="item text-danger delete">

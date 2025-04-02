@@ -45,4 +45,24 @@ class AdminController extends Controller
     public function getCategories(){
         return $this->admin->getCategories();
     }
+
+    public function createCategoryPage(){
+        return $this->admin->createCategoryPage();
+    }
+
+    public function createCategory(Request $request){
+        return $this->admin->createCategory($request);
+    }
+
+    public function updateCategoryPage($category){
+        return $this->admin->updateCategoryPage($category);
+    }
+
+    public function updateCategory(Request $request, $category){
+        return $this->admin->updateCategory($request, $category);
+    }
+
+    public function deleteCategory($category){
+        return $this->admin->deleteCategory($category);
+    }
 }

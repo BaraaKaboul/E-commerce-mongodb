@@ -19,10 +19,10 @@ class AdminRepository implements AdminRepositoryInterface
     public function getBrands()
     {
         try {
-            $brands = Brand::orderBy('id','desc')->paginate(10);
-            return view('admin.brands',compact('brands'));
-        }catch (\Exception $e){
-            return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+            $brands = Brand::orderBy('id', 'desc')->paginate(10);
+            return view('admin.brands', compact('brands'));
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
@@ -51,8 +51,8 @@ class AdminRepository implements AdminRepositoryInterface
             $brand->save();
 
             return to_route('admin.brands');
-        }catch (\Exception $e){
-            return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
@@ -60,15 +60,16 @@ class AdminRepository implements AdminRepositoryInterface
     {
         try {
             $brand_id = Brand::find($brand);
-            return view('admin.edit-brand',compact('brand_id'));
-        }catch (\Exception $e){
-            return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+            return view('admin.edit-brand', compact('brand_id'));
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
 
     }
 
-    public function updateBrand(Request $request, $brand){
-        try {
+    public function updateBrand(Request $request, $brand)
+    {
+        //try {
             $old_image = $request->old_image;
 
 
@@ -79,26 +80,24 @@ class AdminRepository implements AdminRepositoryInterface
 
                 $image = $request->file('image');
                 $fileName = time() . '.' . $image->getClientOriginalName();
-                $request->image->move(public_path('Attachments/'.$request->name), $fileName);
+                $request->image->move(public_path('Attachments/' .$request->name), $fileName);
 
 
-                Brand::where('id', $brand)->findOrFail($brand)->update([
+                Category::where('id', $brand)->findOrFail($brand)->update([
                     'name' => $request->name,
                     'slug' => Str::slug($request->slug),
-                    'image'=>$fileName,
+                    'image' => $fileName,
                 ]);
                 return to_route('admin.brands');
-            }
-            else
-                Brand::findOrFail($brand)->update([
+            } else
+                Category::findOrFail($brand)->update([
                     'name' => $request->name,
                     'slug' => Str::slug($request->slug),
                 ]);
             return to_route('admin.brands');
-
-        }catch (\Exception $e){
-            return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
-        }
+        //}catch (\Exception $e){
+           // return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        //}
     }
 
     public function deleteBrand($brand)
@@ -106,18 +105,111 @@ class AdminRepository implements AdminRepositoryInterface
         try {
             Brand::where('id', $brand)->delete();
             return redirect()->back();
-        }catch (\Exception $e){
-            return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 
     public function getCategories()
     {
         try {
-            $categories = Category::orderBy('id','desc')->paginate(10);
-            return view('admin.category',compact('categories'));
+            $categories = Category::orderBy('id', 'desc')->paginate(10);
+            return view('admin.category', compact('categories'));
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function createCategoryPage()
+    {
+        try {
+            $brands = Brand::all();
+            return view('admin.create-category',compact('brands'));
         }catch (\Exception $e){
-            return redirect()->back()->withErrors(['error'=>$e->getMessage()]);
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function createCategory($request)
+    {
+        try {
+            $brand = Brand::findOrFail($request->brand);
+            $category = new Category();
+            $category->name = $request->name;
+            $category->slug = Str::slug($request->slug);
+            $category->brand_id = $request->brand;
+
+
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $file_name = time() . '_' . $image->getClientOriginalName();
+                $category->image = $file_name;
+
+                // move pic
+                $imageName = $file_name;
+                $request->image->move(public_path('Attachments/' .$brand->name.'/'.$request->name), $imageName);
+            }
+            $category->save();
+
+            return to_route('admin.categories');
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function updateCategoryPage($category)
+    {
+        try {
+            $brands = Brand::select('id','name')->get();
+            $category_id = Category::findOrFail($category);
+            return view('admin.edit-category',compact('category_id','brands'));
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function updateCategory($request, $category)
+    {
+        try {
+            $old_image = $request->old_image;
+            $brand = Brand::findOrFail($request->brand);
+
+
+            if ($request->hasFile('image')) {
+
+                //هاي التعليمة بتحذف الصورة القديمة ومنستبدلها بالصورة الي رح يضيفا المستخدم ازا بدو يعدل الصورة
+                unlink($old_image);
+
+                $image = $request->file('image');
+                $fileName = time() . '.' . $image->getClientOriginalName();
+                $request->image->move(public_path('Attachments/' .$brand->name.'/'.$request->name), $fileName);
+
+
+                Category::where('id', $category)->findOrFail($category)->update([
+                    'name' => $request->name,
+                    'slug' => Str::slug($request->slug),
+                    'image' => $fileName,
+                ]);
+                return to_route('admin.categories');
+            } else
+                Category::findOrFail($category)->update([
+                    'name' => $request->name,
+                    'slug' => Str::slug($request->slug),
+                ]);
+            return to_route('admin.categories');
+
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function deleteCategory($category)
+    {
+        try {
+            Category::findOrFail($category)->delete();
+            return to_route('admin.categories');
+        }catch (\Exception $e){
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
         }
     }
 }

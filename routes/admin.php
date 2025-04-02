@@ -19,6 +19,10 @@ Route::middleware(['auth','AuthAdmin'])->controller(AdminController::class)->gro
     Route::delete('/dashboard/brand/delete/{brand}','deleteBrand')->name('admin.brand.delete');
 
     Route::get('/dashboard/categories','getCategories')->name('admin.categories');
-
+    Route::get('/dashboard/category/create','createCategoryPage')->name('admin.categories.create.page');
+    Route::post('/dashboard/category/create','createCategory')->name('admin.categories.create');
+    Route::get('/dashboard/category/update/{category}','updateCategoryPage')->name('admin.categories.update.page');
+    Route::patch('/dashboard/category/update/{category}','updateCategory')->name('admin.category.update');
+    Route::delete('/dashboard/category/delete/{category}','deleteCategory')->name('admin.category.delete');
 
 });
