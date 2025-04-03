@@ -19,7 +19,18 @@
                         </li>
                     </ul>
                 </div>
-
+                @if (count($errors) > 0)
+                    <div class="card mt-5">
+                        <div class="card-body">
+                            <div class="alert alert-danger">
+                                @foreach ($errors->all() as $error)
+                                    <p> {{ $error }}
+                                    <p>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 <div class="wg-box">
                     <div class="flex items-center justify-between gap10 flex-wrap">
                         <div class="wg-filter flex-grow">

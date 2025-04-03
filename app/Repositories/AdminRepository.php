@@ -6,6 +6,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Repositories\Interfaces\AdminRepositoryInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use function MongoDB\create_field_path_type_map;
 
@@ -103,7 +104,22 @@ class AdminRepository implements AdminRepositoryInterface
     public function deleteBrand($brand)
     {
         try {
-            Brand::where('id', $brand)->delete();
+            $bra = Brand::findOrFail($brand);
+            if ($bra->image){
+                $imagePath = public_path('Attachments/' . Str::slug($bra->name) . '/' . $bra->image);
+                if (File::exists($imagePath)){
+                    File::delete($imagePath);
+
+                    // to delete the folder
+                    $folderPath = dirname($imagePath);
+                    if (is_dir($folderPath) && count(scandir($folderPath)) == 2) {
+                        rmdir($folderPath);
+                    }
+                }
+                $bra->delete();
+            }
+            $bra->delete();
+
             return redirect()->back();
         } catch (\Exception $e) {
             return redirect()->back()->withErrors(['error' => $e->getMessage()]);
@@ -205,11 +221,29 @@ class AdminRepository implements AdminRepositoryInterface
 
     public function deleteCategory($category)
     {
-        try {
-            Category::findOrFail($category)->delete();
-            return to_route('admin.categories');
-        }catch (\Exception $e){
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        //try {
+        $cat = Category::findOrFail($category);
+        if ($cat->image) {
+            // بناء المسار الصحيح للصورة
+            $imagePath = public_path('Attachments/' . Str::slug($cat->brand->name) . '/' . $cat->name . '/' . $cat->image);
+
+            // التحقق من وجود الصورة قبل الحذف
+            if (File::exists($imagePath)) {
+                File::delete($imagePath);
+
+                // (اختياري) حذف المجلد إذا أصبح فارغاً
+                $folderPath = dirname($imagePath);
+                if (is_dir($folderPath) && count(scandir($folderPath)) == 2) {
+                    rmdir($folderPath);
+                }
+            }
+            $cat->delete();
+        }else{
+            $cat->delete();
         }
+            return to_route('admin.categories');
+        //}catch (\Exception $e){
+            //return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        //}
     }
 }
