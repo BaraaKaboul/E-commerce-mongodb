@@ -31,4 +31,18 @@ interface AdminRepositoryInterface
     public function updateCategory($request, $category);
 
     public function deleteCategory($category);
+
+    public function getProducts();
+
+    public function createProductPage();
+    // To get categories that related to brands
+    public function getCategoriesAjax($brand_id);
+
+    public function createProduct($request);
+
+    public function updateProductPage($product);
+
+    public function updateProduct($request, $product);
+
+    public function deleteProduct($product);
 }

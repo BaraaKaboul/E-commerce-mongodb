@@ -14,6 +14,6 @@ class Brand extends Model
     ];
 
     public function category(){
-        return $this->hasMany(Category::class);
+        return $this->hasManyThrough(Product::class,Category::class);
     }
 }
