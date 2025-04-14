@@ -54,7 +54,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach($products as $data)
+                        @forelse($products as $data)
                         <tr>
                             <td>{{$loop->iteration}}</td>
                             <td class="pname">
@@ -96,7 +96,9 @@
                                 </div>
                             </td>
                         </tr>
-                        @endforeach
+                        @empty
+                            <h2>no data</h2>
+                        @endforelse
                         </tbody>
                     </table>
                 </div>

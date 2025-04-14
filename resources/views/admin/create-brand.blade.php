@@ -26,6 +26,18 @@
                         </li>
                     </ul>
                 </div>
+                @if (count($errors) > 0)
+                    <div class="card mt-5">
+                        <div class="card-body">
+                            <div class="alert alert-danger">
+                                @foreach ($errors->all() as $error)
+                                    <p> {{ $error }}
+                                    <p>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
                 <!-- new-category -->
                 <div class="wg-box">
                     <form class="form-new-product form-style-1" action="{{route('admin.brand.create')}}" method="POST" enctype="multipart/form-data">
